@@ -1,50 +1,50 @@
 import React, { Component } from 'react';
 import './App.css';
-import { InputTarea } from './components/Input.js';
-import { ListaTareas } from './components/ListaTareas.js';
+import { InputTask } from './components/InputTask.js';
+import { TaskList } from './components/TaskList.js';
 
-let listaInicial = [];
+let initialList = [];
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      lista: listaInicial,
-      contador: listaInicial.length
+      list: initialList,
+      counter: initialList.length
     };
-    this.modificarLista = this.modificarLista.bind(this);
+    this.updateList = this.updateList.bind(this);
   }
-  
-  componentDidMount(){
-    fetch("http://assets.breatheco.de/apis/fake/todos/user/eli")
-      .then((response)=>
-        { 
-          return response.json; 
-        })
-      .then((responseJSON) =>{
-        let lista = responseJSON;
-        for(let i=0; i<lista.length; i++){
-          listaInicial.push(lista[i]["label"]);
-        }
-        });
-  }
-  
-  modificarLista(arr){
-    this.setState({lista: arr, contador: arr.length});
+
+  updateList(arr){
+    this.setState({list: arr, counter: arr.length});
   }
   render(){
   return (
     <div className="App">
-      <div className="titulo">Todo</div>
-        <div className="hoja">
-          <InputTarea lista={this.state.lista} modificar={this.modificarLista}/>
-            {this.state.contador !== 0 ? (
-            <ListaTareas lista={this.state.lista} modificar={this.modificarLista}/>
-            ) : (
-            <div>No tasks, add a task</div>
-            )}
-        <div>{this.state.contador} item left</div>
+      <div className="title">
+        <h1 className="display-4">To do List</h1>
       </div>
+      <div className="main page">
+        <InputTask list={this.state.list} update={this.updateList}/>
+          {this.state.counter !== 0 ? (
+          <TaskList list={this.state.list} update={this.updateList}/>
+          ) : (
+          <div> 
+            <p className="lead list-group-item">No hay tareas pendientes, agrega alguna tarea</p>  
+          </div>
+          )}
+      {this.state.counter === 1 ?
+        <div className="containerCounter"> 
+          <span className="counter">{this.state.counter} tarea</span>
+        </div>
+      :
+        <div className="containerCounter">
+          <span className="counter">{this.state.counter} tareas</span>
+        </div>
+      }
+      </div>
+      <div className="second page"></div>
+      <div className="third page"></div>
     </div>
   );}
 }
