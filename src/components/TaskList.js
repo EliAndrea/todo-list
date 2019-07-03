@@ -12,15 +12,26 @@ export class TaskList extends Component{
                 newList.push(arr[i]);
             }
         }
-        this.props.update(newList);
+        fetch("http://localhost:8000/api/user/user",{
+                method: 'PUT',
+                body: JSON.stringify(newList), 
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(resp => {return resp.json()})
+            .then(respJSON => {console.log(respJSON)})
+            .catch(err => {console.log(err)});
+        this.props.update();
     }
+    
     render(){
         return(
             <div>
                 <ul className="list-group">
                     {this.props.list.map((task,index) => {
                         return(
-                            <li className="list-group-item lead" key={index}>{task}
+                            <li className="list-group-item lead" key={index}>{task.label}
                                 <div className="delete" onClick={()=>this.deleteTask(this.props.list, index)}>
                                     <i className="fas fa-times"></i>
                                 </div>

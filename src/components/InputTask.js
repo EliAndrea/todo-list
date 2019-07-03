@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-let newList = [];
-
 export class InputTask extends Component{
     constructor(props){
         super(props);
@@ -12,10 +10,36 @@ export class InputTask extends Component{
     }
 
     saveValue(event){
-        newList = this.props.list;
+        let newList = this.props.list;
+        let newTask = {
+            label: "",
+            done: false
+        }
         if(event.key === 'Enter'){
-            newList.push(event.target.value);
-            this.props.update(newList)
+            if (newList.length === 0){
+                fetch("http://localhost:8000/api/user/user",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(resp => {return resp.json()})
+                .then(respJSON => {console.log(respJSON)})
+                .catch(err => {console.log(err)});
+            }
+            newTask.label = event.target.value
+            newList.push(newTask);
+            fetch("http://localhost:8000/api/user/user",{
+                method: 'PUT',
+                body: JSON.stringify(newList), 
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(resp => {return resp.json()})
+            .then(respJSON => {console.log(respJSON)})
+            .catch(err => {console.log(err)});
+            this.props.update() 
         }
     }
 
