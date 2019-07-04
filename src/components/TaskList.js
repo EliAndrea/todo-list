@@ -5,14 +5,14 @@ export class TaskList extends Component{
         super(props);
         this.deleteTask = this.deleteTask.bind(this)
     }
-    deleteTask(arr, index){
+    async deleteTask(arr, index){
         let newList = [];
         for(let i=0; i<arr.length; i++){
             if(i !== index){
                 newList.push(arr[i]);
             }
         }
-        fetch("http://localhost:8000/api/user/user",{
+        await fetch("http://localhost:8000/api/user/user",{
                 method: 'PUT',
                 body: JSON.stringify(newList), 
                 headers: {

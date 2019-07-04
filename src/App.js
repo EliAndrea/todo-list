@@ -20,7 +20,6 @@ class App extends Component {
     fetch("http://localhost:8000/api/user/user")
     .then(resp => {return resp.json()})
     .then(respJSON => {
-      console.log(respJSON)
       this.setState({
         list: respJSON, 
         counter: respJSON.length
@@ -29,8 +28,8 @@ class App extends Component {
     .catch(err => console.log(err))
   }
 
-  deleteAll(){
-    fetch("http://localhost:8000/api/user/user", {
+  async deleteAll(){
+    await fetch("http://localhost:8000/api/user/user", {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'

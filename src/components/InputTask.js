@@ -9,7 +9,7 @@ export class InputTask extends Component{
         this.saveValue = this.saveValue.bind(this);
     }
 
-    saveValue(event){
+    async saveValue(event){
         let newList = this.props.list;
         let newTask = {
             label: "",
@@ -29,7 +29,7 @@ export class InputTask extends Component{
             }
             newTask.label = event.target.value
             newList.push(newTask);
-            fetch("http://localhost:8000/api/user/user",{
+            await fetch("http://localhost:8000/api/user/user",{
                 method: 'PUT',
                 body: JSON.stringify(newList), 
                 headers: {
